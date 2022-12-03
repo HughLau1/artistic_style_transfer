@@ -2,7 +2,7 @@ import copy
 from layers import *
 
 
-def build_cnn(device, cnn, mean, std, style_img, content_img, style_layers, content_layers):
+def build_cnn(device,vgg,mean,std,style_img,content_img,style_layers,content_layers):
     """Deconstructs the inputted CNN (which should be VGG19), and inserts LossLayers
     as defined above at the specified positions."""
 
@@ -14,15 +14,15 @@ def build_cnn(device, cnn, mean, std, style_img, content_img, style_layers, cont
     style_loss_list, content_loss_list = [], []
 
     # Start off with a copied version of VGG19 with copied pre-trained weights
-    cnn = copy.deepcopy(cnn)
+    vgg = copy.deepcopy(vgg)
     conv_index = 1
 
     # Go through layers of inputted CNN, inserting Loss Layer when needed
-    for name, layer in cnn.named_modules():
-        if name == '':
-            continue
-        net.add_module(name, layer)
+    for name, layer in vgg.named_children():
+        # Add layers in order, if ReLU convert to inplace=False for proper backprop functionality
+        net.add_module(name, nn.ReLU(inplace=False) if isinstance(layer, nn.ReLU) else layer)
 
+        # Insert Loss Layers (computing loss and passing output through) at certain points.
         if isinstance(layer, nn.Conv2d):
             if conv_index in content_layers:
                 target_content = net(content_img).detach()
@@ -35,8 +35,6 @@ def build_cnn(device, cnn, mean, std, style_img, content_img, style_layers, cont
                 net.add_module('loss_layer_style_' + str(conv_index), loss_module)
                 style_loss_list.append(loss_module)
             conv_index += 1
-        else:
-            continue
 
     # Gets index of last layer
     for i in range(len(net) - 1, -1, -1):
@@ -44,5 +42,4 @@ def build_cnn(device, cnn, mean, std, style_img, content_img, style_layers, cont
             break
     # Removes last layers based on index 
     net = net[:(i + 1)]
-
     return net, style_loss_list, content_loss_list

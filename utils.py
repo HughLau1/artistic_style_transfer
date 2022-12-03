@@ -1,8 +1,7 @@
 import torch
 import torchvision.transforms as T
-from PIL.Image import open as load_image
 
-def gram_matrix(x):
+def calculate_gram(x):
     """Takes gram matrix of x with shape batch_size, channels,
     h, w. """
     batch_size,channels,h,w=x.size()
