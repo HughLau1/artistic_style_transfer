@@ -2,7 +2,7 @@ import copy
 from layers import *
 
 
-def build_cnn(device,vgg,mean,std,im_style,im_content,style_layers,content_layers):
+def build_cnn(device,vgg,mean,std,im_style,im_content,style_layers,content_layers,avg_pool=True):
     """Deconstructs the inputted CNN (which should be VGG19), and inserts LossLayers
     as defined above at the specified positions."""
 
@@ -25,7 +25,13 @@ def build_cnn(device,vgg,mean,std,im_style,im_content,style_layers,content_layer
         if content_finished and style_finished:
             break
         # Add layers in order, if ReLU convert to inplace=False for proper backprop functionality
-        net.add_module(label, nn.ReLU(inplace=False) if isinstance(layer, nn.ReLU) else layer)
+        # Also, add avgpool instead of maxpool if arg specified, as mentioned in paper
+        if isinstance(layer, nn.MaxPool2d) and avg_pool:
+            net.add_module(label, nn.AvgPool2d(kernel_size=layer.kernel_size))
+        elif isinstance(layer, nn.ReLU):
+            net.add_module(label, nn.ReLU(inplace=False))
+        else:
+            net.add_module(label, layer)
 
         # Insert Loss Layers (computing loss and passing output through) at certain points.
         if isinstance(layer, nn.Conv2d):
@@ -38,7 +44,7 @@ def build_cnn(device,vgg,mean,std,im_style,im_content,style_layers,content_layer
                     content_finished = True
             if conv_index in style_layers:
                 style = net(im_style).detach()
-                loss_module = ContentLoss_Layer(style)
+                loss_module = StyleLoss_Layer(style)
                 net.add_module('loss_layer_style_' + str(conv_index), loss_module)
                 style_loss_list.append(loss_module)
                 if conv_index == max(style_layers):
