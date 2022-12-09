@@ -1,6 +1,6 @@
 Project 6
 
-Submitted by Spencer Jenkins (spencerrjenkins@berkeley.edu) (3033725023) and Hugh Lau (...)
+Submitted by Spencer Jenkins (spencerrjenkins@berkeley.edu) (3033725023) and Hugh Lau (hughlau@berkeley.edu) (3034859764)
 
 Files:
    - layers.py: PyTorch layers

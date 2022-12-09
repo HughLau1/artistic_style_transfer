@@ -26,7 +26,8 @@ The rest of the model was discarded for this project.<br><br>
 Two loss functions were defined: Content Loss (CL) and Style Loss (SL). CL was the
 mean squared difference between two images, while SL was the mean squared difference between
 the Gram Matrices of two images. <br>
-The <b>Gram Matrix</b> is... TODO<br><br>
+The <b>Gram Matrix</b> can be thought of as encoding first- and second-derivative
+information about the photo.<br><br>
 CL was calculated after convolutional layer 4 while SL was calculated after
 all convolutional layers, following the paper.
 
@@ -36,11 +37,47 @@ weighed at a certain importance level. An L-BFGS optimizer was used.
 
 <h3>Results</h3>
 
-<img src="plots/part1match1.jpg" height="30%" width="30%">
-<img src="plots/part1match2.jpg" height="30%" width="30%"><br>
-<img src="plots/part1miss1.jpg" height="30%" width="30%">
-<img src="plots/part1miss2.jpg" height="30%" width="30%"><br><br>
-
+Check out some of the results we were able to create! Some of my favorites were from taking texture samples of
+calligraphy. <br>
+<img src="img/in/alsacien.jpg" height="30%" width="30%">
+<img src="img/in/chinese_calligraphy.jpg" height="30%" width="30%"><br>
+<img src="img/out/alsacien_chinese_calligraphy.jpg" height="30%" width="30%">
+<img src="img/out/alsacien_chinese_calligraphy_loss.jpg" height="30%" width="30%"><br><br>
+<img src="img/in/alsacien.jpg" height="30%" width="30%">
+<img src="img/in/arabic_calligraphy.jpg" height="30%" width="30%"><br>
+<img src="img/out/alsacien_arabic_calligraphy.jpg" height="30%" width="30%">
+<img src="img/out/alsacien_arabic_calligraphy_loss.jpg" height="30%" width="30%"><br><br>
+<img src="img/in/alsacien.jpg" height="30%" width="30%">
+<img src="img/in/kiss.jpg" height="30%" width="30%"><br>
+<img src="img/out/alsacien_kiss.jpg" height="30%" width="30%">
+<img src="img/out/alsacien_kiss_loss.jpg" height="30%" width="30%"><br><br>
+<img src="img/in/cow.jpg" height="30%" width="30%">
+<img src="img/in/arabic_calligraphy.jpg" height="30%" width="30%"><br>
+<img src="img/out/cow_arabic_calligraphy.jpg" height="30%" width="30%">
+<img src="img/out/cow_arabic_calligraphy_loss.jpg" height="30%" width="30%"><br><br>
+<img src="img/in/cow.jpg" height="30%" width="30%">
+<img src="img/in/hieroglyphs.jpg" height="30%" width="30%"><br>
+<img src="img/out/cow_hieroglyphs.jpg" height="30%" width="30%">
+<img src="img/out/cow_hieroglyphs_loss.jpg" height="30%" width="30%"><br><br>
+<img src="img/in/cow.jpg" height="30%" width="30%">
+<img src="img/in/kandinsky.jpg" height="30%" width="30%"><br>
+<img src="img/out/cow_kandinsky.jpg" height="30%" width="30%">
+<img src="img/out/cow_kandinsky_loss.jpg" height="30%" width="30%"><br><br>
+<img src="img/in/nyc.jpg" height="30%" width="30%">
+<img src="img/in/starry-night.jpg" height="30%" width="30%"><br>
+<img src="img/out/nyc_starry-night.jpg" height="30%" width="30%">
+<img src="img/out/nyc_starry-night_loss.jpg" height="30%" width="30%"><br><br>
+<img src="img/in/sd.jpg" height="30%" width="30%">
+<img src="img/in/starry-night.jpg" height="30%" width="30%"><br>
+<img src="img/out/sd_starry-night.jpg" height="30%" width="30%"><br><br>
+<img src="img/in/wales.jpg" height="30%" width="30%">
+<img src="img/in/hokusai.jpg" height="30%" width="30%"><br>
+<img src="img/out/wales_hokusai.jpg" height="30%" width="30%">
+<img src="img/out/wales_hokusai_loss.jpg" height="30%" width="30%"><br><br>
+As a quick note, the texture copied over was not as detailed as expected. This could potentially be improved by
+adding more layers to take loss at, adding more layers from GPT, or increasing the image dimensions.<br>
+As one other note, you may notice random spikes in loss, which we currently cannot account for. It is our hypothesis
+that this occurs when the gradient oversteps the region it intends to. <br>
 
 No further bells and whistles were implemented. <br>
 </body>
