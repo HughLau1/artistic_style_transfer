@@ -1,6 +1,6 @@
 import torch
 import torchvision.transforms as T
-
+# Contains a few other utilities.
 
 def calculate_gram(x):
     """Takes gram matrix of x with shape batch_size, channels,

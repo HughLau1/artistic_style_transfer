@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Final Project: Neural Artistic Style Transfer</title>
+</head>
+<body>
+<h1>Artistic Style Transfer Network</h1>
+<h2>Submitted by Spencer Jenkins and Hugh Lau</h2>
+The goal of this project was to use convolutional neural networks (CNN) for to implement Artistic Style
+Transfer, involving taking the structural content of one image and applying the "style" content of
+another image following the procedure outlined by
+<a target="_blank" href="https://arxiv.org/pdf/1508.06576.pdf">Gatys, Ecker and Bethge</a>. This project demonstrates
+the versatility of convolutional neural networks at collecting information at multiple abstract layers of an image,
+and at producing aesthetically interesting outputs. <br>
+
+<h3>Procedure</h3>
+The project was implemented using PyTorch and executed on Google Colab.
+A pre-trained version of the VGG-19 model, a highly effective convolutional model for visual recognition, was used along
+with pretrained weights and normalization constants. Only the first 5 convolutional layers were taken.
+Convolutional layers had a kernel size of 3x3, and a stride and padding of 1. Pooling was done with a
+kernel and stride of 2. <br>In addition, MaxPool in VGG-19 was replaced with AvgPool in accordance with Gatys et al. for
+better output quality.<br>
+The overall model architecture used was: (Conv->ReLU->Conv->ReLU->Pool)*2->Conv<br>
+The rest of the model was discarded for this project.<br><br>
+Two loss functions were defined: Content Loss (CL) and Style Loss (SL). CL was the
+mean squared difference between two images, while SL was the mean squared difference between
+the Gram Matrices of two images. <br>
+The <b>Gram Matrix</b> is... TODO<br><br>
+CL was calculated after convolutional layer 4 while SL was calculated after
+all convolutional layers, following the paper.
+
+Each image was first center-cropped and resized, then normalized according to parameters given by PyTorch alongside
+the pretrained model weights. The goal is to take a copy of the content image, and optimize it minimizing CL and SL, each
+weighed at a certain importance level. An L-BFGS optimizer was used.
+
+<h3>Results</h3>
+
+<img src="plots/part1match1.jpg" height="30%" width="30%">
+<img src="plots/part1match2.jpg" height="30%" width="30%"><br>
+<img src="plots/part1miss1.jpg" height="30%" width="30%">
+<img src="plots/part1miss2.jpg" height="30%" width="30%"><br><br>
+
+
+No further bells and whistles were implemented. <br>
+</body>
+</html>

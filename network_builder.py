@@ -1,6 +1,6 @@
 import copy
 from layers import *
-
+# network_builder.py: contains the function that builds our modified VGG-19 model.
 
 def build_cnn(device,vgg,mean,std,im_style,im_content,style_layers,content_layers,avg_pool=True):
     """Deconstructs the inputted CNN (which should be VGG19), and inserts LossLayers
